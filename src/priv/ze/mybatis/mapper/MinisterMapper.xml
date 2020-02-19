@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="priv.ze.mybatis.mapper.MinisterMapper">
+<!--    多对一-->
+    <resultMap id="Minister1Mapper" type="Minister1">
+        <id property="mid" column="mid"/>
+        <result property="name" column="name"/>
+        <association property="country" javaType="Country1">
+            <result column="cname" property="cname"/>
+        </association>
+    </resultMap>
+    <select id="selectMinisterById" resultMap="Minister1Mapper">
+     select mid,name,cname from Country,minister where Cid=countryid and mid=#{xxx}
+    </select>
+</mapper>

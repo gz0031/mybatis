@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE configuration
+        PUBLIC "-//mybatis.org//DTD Config 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-config.dtd">
+<configuration>
+    <settings>
+<!--        延迟加载的开关默认是false-->
+<!--        延迟加载-->
+        <setting name="lazyLoadingEnabled" value="false"/>
+<!--        侵入式加载的开关 默认是true-->
+<!--        会将关联查询和主查询联系起来即查询主查询必会查询关联查询但是可能还是会有延迟-->
+        <setting name="aggressiveLazyLoading" value="true"/>
+<!--        二级缓存的局部关闭是通过在select标签中将useCache属性设置为false-->
+        <!--        <setting name="cacheEnabled" value="false"/>   关闭二级缓存（全局关闭）-->
+        <setting name="logImpl" value="STDOUT_LOGGING" />
+    </settings>
+
+    <typeAliases>
+<!--       针对单个别名定义  type:类型的路径  alias:别名-->
+<!--        <typeAlias type="priv.ze.mybatis.domain.Student" alias="Student"></typeAlias>-->
+<!--        批量别名定义 指定包名，mybatis自动扫描包中的类，自动定义别名，别名就是类名（首字母大小写都可以）-->
+        <package name="priv.ze.mybatis.domain"/>
+    </typeAliases>
+    <environments default="development">
+<!--environments中可包含多个environment，environments标签的default属性会指定当前使用哪个environment，由id来指定-->
+        <environment id="development" >
+            <transactionManager type="JDBC"/>
+            <dataSource type="POOLED">
+                <property name="driver" value="com.mysql.cj.jdbc.Driver"/>
+                <property name="url" value="jdbc:mysql://localhost:3306/db?serverTimezone=GMT%2B8&amp;useSSL=false"/>
+                <property name="username" value="root"/>
+                <property name="password" value="00312000"/>
+            </dataSource>
+        </environment>
+    </environments>
+    <mappers>
+<!--        <mapper resource="config/mapper/StudentMapper.xml"/>-->
+<!--        <mapper class="priv.ze.mybatis.mapper.StudentMapper"></mapper>-->
+<!--        使用class来加载映射文件，遵循一些规范：需要使用mapper接口类名
+            和mapper.xml映射文件名称保持一致，且在同一目录中
+            还有一个前提是：使用的必须是mapper代理方法>-->
+<!--        批量加载mapper 指定mapper接口的包名，mybatis自动扫描包下边所有的mapper接口进行加载
+            遵循一些规范：需要使用mapper接口类名
+            和mapper.xml映射文件名称保持一致，且在同一目录中
+            还有一个前提是：使用的必须是mapper代理方法-->
+        <package name="priv.ze.mybatis.mapper"/>
+    </mappers>
+</configuration>

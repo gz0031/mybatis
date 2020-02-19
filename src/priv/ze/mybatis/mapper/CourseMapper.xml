@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<!--多对多查询-->
+<mapper namespace="priv.ze.mybatis.mapper.CourseMapper">
+    <resultMap id="CourseMapper" type="Course">
+        <id column="courseid" property="courseid"/>
+        <result column="coursename" property="coursename"/>
+        <collection property="students" ofType="Stu">
+            <id column="stuid" property="stuid"/>
+            <result property="stuname" column="stuname"/>
+        </collection>
+    </resultMap>
+     <select id="selectByCourse" resultMap="CourseMapper">
+         select stuname,stuid,coursename,courseid from middle,course,stu
+         where sid=stuid and cid=courseid and courseid=#{xxx}
+     </select>
+</mapper>

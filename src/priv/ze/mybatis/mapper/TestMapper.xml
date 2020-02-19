@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<!--多对多查询-->
+<mapper namespace="priv.ze.mybatis.mapper.TestMapper">
+    <resultMap id="testMapper" type="test">
+        <id property="id" column="stuid"/>
+        <result property="stuName" column="stuname"/>
+    </resultMap>
+
+    <insert id="insert" parameterType="test">
+        insert into stu (stuid,stuname) values (#{id},#{stuName})
+    </insert>
+
+    <select id="selectByPojo" resultMap="testMapper">
+        select stuid,stuname from stu where stuid=#{id} and stuname=#{stuName}
+    </select>
+</mapper>

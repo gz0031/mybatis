@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="priv.ze.mybatis.mapper.StudentMapper">
+<!--    namespace的名字应该设置为对应Dao的全限定名-->
+<!--    mybatis中编写sql语句可以不加分号-->
+<!--    id属性用来专门负责给sql语句传值-->
+<!--    parameterType属性用来指定传的这个值的数据类型-->
+<!--    resultType属性用来指定查询结果集即将封装的对象类型，这里需要提供全限定名称，
+        表示将单条记录映射成java对象，但是只有在查询出来的列名(数据库)与pojo的属性名相同才可以-->
+<!--    resultMap适用于查询出来的列名与pojo属性名不同时，通过定义一个resultMap对列名和pojo属性名之间做一个映射关系-->
+<!--    mybatis当中占位符不能使用?,必须使用#{}，当#{}只有一个的时候，#{这里的随意写}-->
+<!--    查询之后的列名需要和javabean的属性名一致，这样查询接获才会赋值到对应的属性上，没有对应上的，需要用as起别名-->
+<!--    当parameterType是简单类型时，parameterType可以不写-->
+<!--    简单类型有：byte short int long float double boolean char Byte Short Integer Long Float Double Boolean Character-->
+<!--    ${}表示拼接sql串，将拼接到参数的内容不加任何修饰拼接在sql中,${value}:接收输入参数的内容，
+        如果传入类型是简单类型，${}只能用value,因为会有sql注入的情况，所以不建议使用-->
+
+<!--    定义resultMap的定义-->
+    <!--        type:resultMap最终映射的java对象类型,可以使用别名  id:对resultMap的唯一标识-->
+    <resultMap  type="student" id="studentResultMap">
+<!--        id表示查询结果集中唯一标识  result对普通名映射定义-->
+<!--        column查询出来的列名 property指定的pojo中的属性名-->
+<!--        #{}中可以放什么内容？
+           (1)参数对象的属性
+           (2)随意内容,此时的#{}是个占位符
+           (3)参数为map时的key
+           (4)参数为map时，若key所对应的value为对象，则可将该对象的属性放入
+           (5)参数的索引号
+-->
+<!--       id对应主键，result对应非主键的属性-->
+        <id column="ID" property="stuID"/>
+        <result column="name" property="stuName"/>
+    </resultMap>
+
+<!--   动态sql语句-->
+<!--where标签表示拼接sql语句-->
+<!--    if标签表示若符合条件的话则将其中的sql语句加到主sql语句中-->
+<!--    and在if中全部添加，即使多余了where标签会进行删除-->
+    <select id="getByStuID"  resultType="student">
+        select * from student
+        <where>
+            <if test="stuID!=null and stuID!=''">
+                and stuID=#{stuID}
+            </if>
+        </where>
+    </select>
+
+    <select id="getAll" resultType="priv.ze.mybatis.domain.Student">
+        select stuName,tel from student
+    </select>
+
+    <insert id="save" parameterType="priv.ze.mybatis.domain.Student">
+        insert into student (stuName,stuID,tel,major,direction,state) values (#{stuName},#{stuID},#{tel},#{major},#{direction},#{state})
+    </insert>
+
+    <delete id="deleteone">
+        delete from administrator where tel=#{d}
+    </delete>
+
+<!--    当传入的是pojo时，参数中直接写pojo所对应的属性名-->
+    <update id="updateone" parameterType="priv.ze.mybatis.domain.Student1" >
+        update administrator set tel = #{tel} where stuID = #{stuID}
+    </update>
+
+    <!--对resultMap的使用-->
+    <select id="findByMajor" resultMap="studentResultMap">
+        select stuID ID,stuName name from student where major=#{major}
+    </select>
+</mapper>
