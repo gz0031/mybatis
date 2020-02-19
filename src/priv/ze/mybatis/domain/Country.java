@@ -12,7 +12,7 @@ public class Country {
     String cname;
     String countryid;
     Set<Minister> ministers;
-
+    //测试
     public String getCname() {
         return cname;
     }
